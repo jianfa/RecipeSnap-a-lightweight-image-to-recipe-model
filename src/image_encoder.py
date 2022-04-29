@@ -4,8 +4,8 @@ from torchvision.models import mobilenet_v2
 import torch
 import torch.nn as nn
 
-class TorchVisionBackbone(nn.Module):
-    """Class for Torchvision models
+class ImageEncoderBackbone(nn.Module):
+    """Class for image encoder 
 
     Parameters
     ----------
@@ -17,8 +17,8 @@ class TorchVisionBackbone(nn.Module):
         Whether to load pretrained imagenet weights.
 
     """
-    def __init__(self, hidden_size, image_model='mobilenet_v2'):
-        super(TorchVisionBackbone, self).__init__()
+    def __init__(self, hidden_size=1024, image_model='mobilenet_v2'):
+        super(ImageEncoderBackbone, self).__init__()
         self.image_model = image_model
         backbone = globals()[image_model](pretrained=False)
         if 'mobilenet' in image_model:
@@ -47,7 +47,8 @@ class TorchVisionBackbone(nn.Module):
         return nn.Tanh()(out)
 
 
-def ImageEmbedding(nn.Module):
+
+class ImageEmbedding(nn.Module):
     """ Extract embedding of images
     Parameters
     ----------
@@ -56,9 +57,9 @@ def ImageEmbedding(nn.Module):
     image_model : string
         Name of image model.
     """
-    def __init__(self, output_size, image_model='mobilenet_v2'):
+    def __init__(self, output_size, image_model):
         super(ImageEmbedding, self).__init__()
-        self.image_encoder = TorchVisionBackbone(output_size, image_model)
+        self.image_encoder = ImageEncoderBackbone(output_size, image_model)
 
     def forward(self, img, freeze_backbone=True):
         img_feat = self.image_encoder(img, freeze_backbone=freeze_backbone)
