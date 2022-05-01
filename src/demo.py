@@ -13,12 +13,12 @@ def plot_image(image_path):
     plt.show()
 
 def print_recipe(recipe, rank):
-    print(f"Recipe likelihood rank: {rank}")
+    print(f"\n Recipe likelihood rank: {rank}")
     print(f"Title: {recipe['title']}")
-    print("\n Ingredient: ")
-    print("\n".join(recipe['ingredients']))
-    print("\n Instruction: ")
-    print("\n".join(recipe['instructions']))
+    print("Ingredient: ")
+    print("\t" + "\n \t".join(recipe['ingredients']))
+    print("Instruction: ")
+    print("\t" + "\n \t".join(recipe['instructions']))
 
 def main():
     # Update with your paths and model names, the following are default values

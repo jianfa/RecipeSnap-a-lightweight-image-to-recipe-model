@@ -131,8 +131,6 @@ class RecipeTransformerEncoder(nn.Module):
                                                       n_layers=n_layers
                                                      )
 
-
-
         # second transformer for sequences of sequences inputs
         # (eg a list of raw ingredients or a list of instructions)
         self.merger = nn.ModuleDict()
