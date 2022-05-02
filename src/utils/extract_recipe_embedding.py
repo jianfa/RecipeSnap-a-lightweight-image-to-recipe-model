@@ -16,7 +16,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 map_loc = None if torch.cuda.is_available() else 'cpu'
 
 
-def test(args):
+def extract_recipe_embedding(args):
 
     if device != 'cpu':
         cudnn.benchmark = True
@@ -94,4 +94,4 @@ def test(args):
 
 if __name__ == "__main__":
     args = get_args()
-    test(args)
+    extract_recipe_embedding(args)

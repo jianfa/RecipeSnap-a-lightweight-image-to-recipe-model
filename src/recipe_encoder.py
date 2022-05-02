@@ -2,9 +2,6 @@
 
 import torch
 import torch.nn as nn
-# import numpy as np
-# import torch.nn.functional as F
-
 
 
 class LearnedPositionalEncoding(nn.Module):
@@ -190,7 +187,7 @@ class JointEmbedding(nn.Module):
     """
 
     def __init__(self, output_size, 
-                 vocab_size=None,
+                 vocab_size=16303,
                  hidden_recipe=512,
                  n_heads=4, n_layers=2):
         super(JointEmbedding, self).__init__()
@@ -205,7 +202,7 @@ class JointEmbedding(nn.Module):
         # linear layer to merge features from all recipe components.
         self.merger_recipe = nn.Linear(hidden_recipe*(3), output_size)
 
-    def forward(self, img, title, ingrs, instrs,
+    def forward(self, title, ingrs, instrs,
                 freeze_backbone=True, resume_recipe_encoder_only=False):
 
         text_features = []

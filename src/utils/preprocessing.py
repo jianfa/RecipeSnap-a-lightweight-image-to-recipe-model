@@ -9,26 +9,33 @@ import os
 import json
 import random
 random.seed(1234)
-from random import choice
 import pickle
 from PIL import Image
 import torch
 from torch.utils.data import Dataset
-# from utils.utils import get_token_ids, list2Tensors
+from utils.utils import get_token_ids, list2Tensors
 import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 import multiprocessing
 import nltk
+import hashlib 
 
+def recipe_preprocessing(new_recipe_dict):
+    replace_dict_rawingrs = {'1/2 ': ['12 '], '1/3 ': ['13 '], '1/4 ': ['14 '],
+                            '1/8 ': ['18 '],
+                            '2/3 ': ['23 '], '3/4 ': ['34 ']
+                            }
+    new_dataset = {}
+    for entry in new_recipe_dict:
+        encoded = json.dumps(entry, sort_keys=True).encode()
+        hash_id = hashlib.md5(encoded).hexdigest()
+        new_entry = {}
+        new_entry['title'] = entry['title'].lower()
+        new_entry['ingredients'] = [ingr.lower() for ingr in entry['ingredients']]
+        new_entry['instructions'] = [instr.lower() for instr in entry['instructions']]
+        new_dataset[hash_id] = new_entry 
+    return new_dataset
 
-def text_preprocessing(new_recipe_dict):
-    None 
-
-def img_preprocessing(new_imgs):
-    None 
-
-def get_img_loader():
-    None 
 
 def get_token_ids(sentence, vocab):
     """
@@ -98,8 +105,10 @@ class Recipe(Dataset):
 
     Parameters
     ----------
-    new_recipe_path : string
+    recipe_path : string
         Path to new recipe file, must in pickle format.
+    recipe_dict : dict
+        Dict of new recipes.
     max_ingrs : int
         Maximum number of ingredients to use.
     max_instrs : int
@@ -110,12 +119,13 @@ class Recipe(Dataset):
         Maximum length of instruction sentences.
     """
 
-    def __init__(self, new_recipe_path,
+    def __init__(self, recipe_path=None, recipe_dict=None,
                  max_ingrs=20,
                  max_instrs=20,
                  max_length_ingrs=15,
                  max_length_instrs=15):
 
+        assert recipe_path or recipe_dict, "either recipe_path or recipe_dict must be non-empty"
         #load vocabulary
         self.vocab_inv = pickle.load(open('../data/vocab.pkl', 'rb'))
         self.vocab = {}
@@ -124,7 +134,11 @@ class Recipe(Dataset):
                 v = v[0]
             self.vocab[v] = k
 
-        self.data = pickle.load(open(new_recipe_path,'rb'))
+        if recipe_path:
+            self.data = pickle.load(open(recipe_path,'rb'))
+        else:
+            self.data = recipe_dict
+  
         self.ids = list(self.data.keys())
 
         self.max_ingrs = max_ingrs
@@ -158,26 +172,20 @@ class Recipe(Dataset):
         except:
             return None
 
-def get_recipe_loader(recipe_dir, batch_size,
-               split='train', mode='train',
-               drop_last=True,
-               text_only_data=False):
+def get_recipe_loader(recipe_path=None,recipe_dict=None,batch_size=128,
+               drop_last=True):
     """Function to get dataset and dataloader for a data split
 
     Parameters
     ----------
-    recipe_dir : string
-        Path to Recipe1M dataset.
+    recipe_path : string
+        Path to recipe dataset.
+    recipe_dict: dict
+        dict object of recipe
     batch_size : int
         Batch size.
-    split : string
-        Dataset split (train, val, or test)
-    mode : string
-        Loading mode (impacts augmentations & random sampling)
     drop_last : bool
         Whether to drop the last batch of data.
-    text_only_data : type
-        Whether to load text-only or paired samples.
 
     Returns
     -------
@@ -185,8 +193,8 @@ def get_recipe_loader(recipe_dir, batch_size,
     ds : a pytorch Dataset
 
     """
-
-    ds = Recipe(recipe_dir)
+    assert recipe_path or recipe_dict, "either recipe_path or recipe_dict must be non-empty"
+    ds = Recipe(recipe_path=recipe_path, recipe_dict=recipe_dict)
     loader = DataLoader(ds, batch_size=batch_size, shuffle=False,
                         num_workers=multiprocessing.cpu_count(),
                         collate_fn=collate_fn_recipe, drop_last=drop_last)
@@ -224,9 +232,6 @@ class ImageDataset(Dataset):
     def __len__(self):
         return len(self.image_names)
 
-    # def get_ids(self):
-    #     return self.image_names
-        # return list(range(len(self.image_names)))
 
 def get_image_loader(image_dir, resize=256, im_size=224, batch_size=1, augment=True, mode='predict',drop_last=True):
     """Function to get dataset and dataloader for images
