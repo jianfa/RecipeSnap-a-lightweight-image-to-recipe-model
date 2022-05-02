@@ -1,4 +1,4 @@
-# Recipe Snap - a light-weight pretrained model to predict recipe from image
+# RecipeSnap - a lightweight pretrained model to predict recipe from image
 
 We implemented a lightweight image to recipe prediction model. We used MobileNet_v2 as image encoder backbone. This model only has 3 million parameters and can be easily deployed on smartphone or other smart tablets.   
 
@@ -16,16 +16,16 @@ git clone https://github.com/jianfa/RecipeSnap-a-lightweight-recipe-to-image-mod
 
 ## Data preparation
 Recipe embeddings can be download here:
-1. [feats_test.pkl](https://storage.cloud.google.com/recipe_snap_bucket_1/recipe_embeddings/feats_test.pkl)
-2. [feats_train.pkl](https://storage.cloud.google.com/recipe_snap_bucket_1/recipe_embeddings/feats_train.pkl) (**Optional**)   
+1. feats_test.pkl (Included in data/recipe_embeddings folder)
+2. [feats_train.pkl](https://drive.google.com/file/d/17UJyO00yRzwn5hnZ4-wMfH1vkMihyqNn/view?usp=sharing) (**Optional**)   
 
 Please save these two files to data/recipe_embeddings/
 
 Recipes can be download here:
-1. [test.pkl](https://storage.cloud.google.com/recipe_snap_bucket_1/traindata/test.pkl)
-2. [test_noimage.pkl](https://storage.cloud.google.com/recipe_snap_bucket_1/traindata/test_noimages.pkl)
-3. [train.pkl](https://storage.cloud.google.com/recipe_snap_bucket_1/traindata/train.pkl) (**Optional**)
-4. [train.pkl](https://storage.cloud.google.com/recipe_snap_bucket_1/traindata/train_noimages.pkl) (**Optional**)
+1. test.pkl (Included in data/recipe_lib folder)
+2. test_noimage.pkl (Included in data/recipe_lib folder)
+3. [train.pkl](https://drive.google.com/file/d/17UJyO00yRzwn5hnZ4-wMfH1vkMihyqNn/view?usp=sharing) (**Optional**)
+4. [train_noimages.pkl](https://drive.google.com/file/d/17UJyO00yRzwn5hnZ4-wMfH1vkMihyqNn/view?usp=sharing) (**Optional**)
 
 Plase save these two files to data/recipe_lib/
 
@@ -38,11 +38,11 @@ We used pretrained recipe encoder from [image-to-recipe-transformers](https://gi
 | Split | loss | MedR | Recall_1 | Recall_5 | Recall_10 |  
 |-------|------|------|----------|----------|-----------|  
 | train | 0.0133 | 2.0000 | 0.4536 | 0.7911 | 0.8913 |  
-| test  | 0.0267 | 2.0000 | 0.4123 | 0.7187 | 0.8210 |  
+| val  | 0.0267 | 2.0000 | 0.4123 | 0.7187 | 0.8210 |  
 
-## Example
+## Usage
 
-Both demo.py and display.ipynb provode a usage example.
+Both demo.py and display.ipynb provide a usage example.
 
 ## License
 
