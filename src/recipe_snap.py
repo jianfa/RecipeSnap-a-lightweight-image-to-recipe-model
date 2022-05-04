@@ -103,21 +103,21 @@ class RecipeSnap(object):
         return loader, dataset
 
     def load_recipe_lib(self, recipe_emb_path="../data/recipe_embeddings/recipe_embeddings_feats_test.pkl", 
-                    recipe_lib_path="../data/recipe_lib/test.pkl"):
+                    recipe_dict_path="../data/recipe_dict/test.pkl"):
         with open(recipe_emb_path, 'rb') as f:
             self.recipe_embs = pickle.load(f)
             self.recipe_ids = pickle.load(f)
         print(f"Succeed to load recipe embedding from ... {recipe_emb_path}")
         print(f"Recipe embedding shape: {self.recipe_embs.shape}")
 
-        with open(recipe_lib_path, 'rb') as f:
-            self.recipe_lib = pickle.load(f)
-        noimage_file_path = recipe_lib_path[:-4] + "_noimages.pkl"
+        with open(recipe_dict_path, 'rb') as f:
+            self.recipe_dict = pickle.load(f)
+        noimage_file_path = recipe_dict_path[:-4] + "_noimages.pkl"
         if os.path.exists(noimage_file_path):
             with open(noimage_file_path, 'rb') as f:
-                self.recipe_lib.update(pickle.load(f))
-        print(f"Succeed to load recipe library from ... {recipe_lib_path}")
-        print(f"Recipe library size {len(self.recipe_lib)}")
+                self.recipe_dict.update(pickle.load(f))
+        print(f"Succeed to load recipe library from ... {recipe_dict_path}")
+        print(f"Recipe library size {len(self.recipe_dict)}")
 
 
     def predict(self, image_dir, max_k=5):
@@ -128,27 +128,27 @@ class RecipeSnap(object):
         retrieved_recipes_dict = defaultdict(list)
         for i, img_name in enumerate(img_names):
             for rec_id in retrieved_idxs_recs[i]:
-                retrieved_recipes_dict[img_name].append(self.recipe_lib[self.recipe_ids[rec_id]])
+                retrieved_recipes_dict[img_name].append(self.recipe_dict[self.recipe_ids[rec_id]])
 
         return retrieved_recipes_dict
 
     def update_recipe_lib(self, new_recipes):
         print("Updating recipe lib ...")
-        print(f"Before update, there are {len(self.recipe_lib)} recipes in library")
+        print(f"Before update, there are {len(self.recipe_dict)} recipes in library")
         new_recipe_dict = recipe_preprocessing(new_recipes)
         loader, dataset = self.load_recipe(recipe_dict=new_recipe_dict)
         new_recipe_embs, new_recipe_ids = self.compute_recipe_embedding(loader)
         self.recipe_embs = np.concatenate((self.recipe_embs, new_recipe_embs))
         self.recipe_ids.extend(new_recipe_ids)
-        self.recipe_lib.update(new_recipe_dict)
-        print(f"After update, there are {len(self.recipe_lib)} recipes in library")
+        self.recipe_dict.update(new_recipe_dict)
+        print(f"After update, there are {len(self.recipe_dict)} recipes in library")
 
 
-    def save_recipe_lib(self, new_recipe_emb_path, new_recipe_lib_path):
+    def save_recipe_lib(self, new_recipe_emb_path, new_recipe_dict_path):
         with open(new_recipe_emb_path, 'wb') as f:
             pickle.dump(self.recipe_embs, f)
             pickle.dump(self.recipe_ids, f)
 
-        with open(new_recipe_lib_path, 'wb') as f:
-            pickle.dump(self.recipe_lib, f)
+        with open(new_recipe_dict_path, 'wb') as f:
+            pickle.dump(self.recipe_dict, f)
         

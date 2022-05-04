@@ -1,6 +1,7 @@
 # RecipeSnap - a lightweight pretrained model to predict recipe from image
 
-We implemented a lightweight image to recipe prediction model. We used MobileNet_v2 as image encoder backbone. This model only has 3 million parameters and can be easily deployed on smartphone or other smart tablets.   
+We implemented a lightweight image to recipe prediction model. We used MobileNet_v2 as image encoder backbone. This model only has 3 million parameters and can be easily deployed on portable devices.
+
 
 ## Cloning 
 
@@ -27,7 +28,7 @@ Recipes can be download here:
 3. [train.pkl](https://drive.google.com/file/d/17UJyO00yRzwn5hnZ4-wMfH1vkMihyqNn/view?usp=sharing) (**Optional**)
 4. [train_noimages.pkl](https://drive.google.com/file/d/17UJyO00yRzwn5hnZ4-wMfH1vkMihyqNn/view?usp=sharing) (**Optional**)
 
-Plase save these two files to data/recipe_lib/
+Plase save these two files to data/recipe_dict/
 
 
 ## Training
@@ -40,7 +41,7 @@ We used pretrained recipe encoder from [image-to-recipe-transformers](https://gi
 | train | 0.0133 | 2.0000 | 0.4536 | 0.7911 | 0.8913 |  
 | val  | 0.0267 | 2.0000 | 0.4123 | 0.7187 | 0.8210 |  
 
-## Usage
+## Example
 
 Both demo.py and display.ipynb provide a usage example.
 
