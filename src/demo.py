@@ -27,9 +27,9 @@ def main():
     image_dir = '../images'
     checkpoint_dir = "../checkpoints/model"
     recipe_emb_path = "../data/recipe_embeddings/recipe_embeddings_feats_test.pkl" 
-    recipe_lib_dir = "../data/recipe_lib"
+    recipe_dict_dir = "../data/recipe_dict"
     new_recipe_emb_path="../data/recipe_embeddings/new_recipe_embeddings.pkl"
-    new_recipe_lib_path="../data/recipe_lib/new_recipe.pkl"
+    new_recipe_dict_path="../data/recipe_dict/new_recipe.pkl"
     
     new_recipes = [{"title":"Pan-Fried Chinese Pancakes",
                     "ingredients":["1/4 teaspoon salt", "3/4 cup warm water"], 
@@ -39,7 +39,7 @@ def main():
 
     rs = RecipeSnap(checkpoint_dir=checkpoint_dir)
     rs.load_image_encoder()
-    rs.load_recipe(recipe_emb_path=recipe_emb_path, recipe_lib_dir=recipe_lib_dir)
+    rs.load_recipe(recipe_emb_path=recipe_emb_path, recipe_dict_dir=recipe_dict_dir)
     results = rs.predict(image_dir=image_dir)
 
     for img, recipes in results.items():
@@ -50,7 +50,7 @@ def main():
 
     rs.load_recipe_encoder()
     rs.update_recipe_lib(new_recipes=new_recipes)
-    rs.save_recipe_lib(new_recipe_emb_path, new_recipe_lib_path)
+    rs.save_recipe_lib(new_recipe_emb_path, new_recipe_dict_path)
 
 
 
