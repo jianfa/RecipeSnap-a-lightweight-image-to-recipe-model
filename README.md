@@ -4,7 +4,7 @@ We implemented a lightweight image to recipe prediction model. We used MobileNet
 
 This is the PyTorch companion code for the paper:
 
-*Amaia Salvador, Erhan Gundogdu, Loris Bazzani, and Michael Donoser. [RecipeSnap -- a lightweight image-to-recipe model](https://doi.org/10.48550/arxiv.2205.02141). 
+*Jianfa Chen, Yue Yin, Yifan Xu. [RecipeSnap -- a lightweight image-to-recipe model](https://doi.org/10.48550/arxiv.2205.02141). *
 
 If you find this code useful in your research, please consider citing using the following BibTeX entry:
 

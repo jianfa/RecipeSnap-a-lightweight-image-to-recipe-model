@@ -9,15 +9,12 @@ import torch
 import nltk
 
 
-
-
 def load_checkpoint(checkpoints_dir, map_loc, suff='best'):
     model_state_dict = torch.load(os.path.join(checkpoints_dir,'model-'+suff+'.ckpt'),map_location=map_loc)
     return model_state_dict
 
 def count_parameters(model):
     return sum(p.numel() for p in model.parameters() if p.requires_grad)
-
 
 
 def get_token_ids(sentence, vocab):
