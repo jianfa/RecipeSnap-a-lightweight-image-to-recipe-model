@@ -8,6 +8,7 @@ This is the PyTorch companion code for the paper:
 
 If you find this code useful in your research, please consider citing using the following BibTeX entry:
 
+```
 @misc{https://doi.org/10.48550/arxiv.2205.02141,
   doi = {10.48550/ARXIV.2205.02141},
   
@@ -25,7 +26,7 @@ If you find this code useful in your research, please consider citing using the 
   
   copyright = {Creative Commons Attribution 4.0 International}
 }
-
+```
 
 ## Cloning 
 
